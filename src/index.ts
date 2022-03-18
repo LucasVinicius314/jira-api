@@ -1,30 +1,12 @@
 import * as cors from 'cors'
 import * as dotenv from 'dotenv'
 import * as express from 'express'
-import * as fs from 'fs'
-import * as http from 'http'
 
-import { axios } from './services/axios'
+import { Jira } from './models/jira'
 
 dotenv.config()
 
 const setup = async () => {
-  const url = ''
-
-  const res = await axios.get(`${url}events`)
-
-  ''.toLocaleLowerCase()
-
-  // await sequelize
-  //   .authenticate()
-  //   .then(() => console.log('Database auth ok'))
-  //   .catch(console.log)
-
-  // await sequelize
-  //   .sync({ alter: true, force: false, logging: false })
-  //   .then(() => console.log('Database sync ok'))
-  //   .catch(console.log)
-
   const app = express()
 
   app.use(cors())
@@ -33,24 +15,50 @@ const setup = async () => {
   // app.use(urlencoded({ extended: true }))
   // app.use('/api/', router)
 
-  app.get('/', (req, res) => {
-    res.send('aaaaa')
+  app.get('/events', async (req, res) => {
+    const data = await Jira.events()
+
+    res.json(data.data)
   })
 
-  http
-    .createServer(
-      {
-        // requestCert: true,
-        // rejectUnauthorized: false,
-        // key: fs.readFileSync('ssl/server_key.pem'),
-        // cert: fs.readFileSync('ssl/server_cert.pem'),
-        // ca: [fs.readFileSync('ssl/server_cert.pem')],
-      },
-      app
-    )
-    .listen(process.env.PORT, () => {
-      console.log(`Listening on port ${process.env.PORT}`)
-    })
+  app.get('/issue', async (req, res) => {
+    try {
+      const data = await Jira.issue({ summary: 'marcelo' })
+
+      res.json(data.data)
+    } catch (error) {
+      res.status(400).send(error)
+    }
+  })
+
+  app.get('/getissue', async (req, res) => {
+    try {
+      const data = await Jira.getIssue({ id: 'LEZD-1' })
+
+      res.json(data.data)
+    } catch (error) {
+      res.status(400).send(error)
+    }
+  })
+
+  // https
+  //   .createServer(
+  //     {
+  //       requestCert: true,
+  //       rejectUnauthorized: true,
+  //       key: fs.readFileSync('ssl/server-key.pem'),
+  //       cert: fs.readFileSync('ssl/server-crt.pem'),
+  //       ca: [fs.readFileSync('ssl/client-ca-crt.pem')],
+  //     },
+  //     app
+  //   )
+  //   .listen(process.env.PORT, () => {
+  //     console.log(`Listening on port ${process.env.PORT}`)
+  //   })
+
+  app.listen(process.env.PORT, () => {
+    console.log(`Listening on port ${process.env.PORT}`)
+  })
 }
 
 setup()

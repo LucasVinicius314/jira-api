@@ -127,5 +127,6 @@ dist
 .pnp.*
 
 *.pem
+*.srl
 
 build/
