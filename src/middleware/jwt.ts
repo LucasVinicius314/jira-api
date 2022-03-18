@@ -19,6 +19,7 @@ export const validationHandler: RequestHandler = (req, res, next) => {
       token,
       secret
     ) as unknown as Entities.Common.UserAttributes
+
     req.user = decoded
 
     next()

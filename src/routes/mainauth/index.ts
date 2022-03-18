@@ -5,16 +5,16 @@ import { Router } from 'express'
 import { sha256 } from '../../utils/crypto'
 import { sign } from '../../middleware/jwt'
 
-export const authRouter = Router()
+export const mainAuthRouter = Router()
 
-authRouter.post('/login', async (req, res, next) => {
+mainAuthRouter.post('/login', async (req, res, next) => {
   const email = req.body.email
   const password = req.body.password
 
   try {
     const user = await DBEntities.User.findOne({
       attributes: {
-        exclude: ['password'],
+        exclude: ['password', 'key'],
       },
       where: {
         [Op.and]: {
@@ -29,19 +29,24 @@ authRouter.post('/login', async (req, res, next) => {
 
       res.json(user)
     } else {
-      next(new HttpException(400, 'User not found'))
+      next(new HttpException(400, 'User not found.'))
     }
   } catch (error) {
-    next(new HttpException(400, 'Invalid login data'))
+    next(new HttpException(400, 'Invalid login data.'))
   }
 })
 
-authRouter.post('/register', async (req, res, next) => {
+mainAuthRouter.post('/register', async (req, res, next) => {
   const email = req.body.email
   const password = req.body.password
   const username = req.body.username
+  const key = req.body.key
 
   try {
+    const masterKey = process.env['MASTER_KEY']
+
+    if (masterKey === undefined || masterKey !== key) throw 'Invalid operation.'
+
     const user = await DBEntities.User.create({
       email: email,
       password: sha256(password),
@@ -53,6 +58,6 @@ authRouter.post('/register', async (req, res, next) => {
     res.json(user)
   } catch (error) {
     console.log(error)
-    next(new HttpException(400, 'Invalid data'))
+    next(new HttpException(400, 'Invalid data.'))
   }
 })

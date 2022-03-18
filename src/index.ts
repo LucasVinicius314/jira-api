@@ -5,10 +5,21 @@ import * as express from 'express'
 import { json, urlencoded } from 'body-parser'
 
 import { router } from './routes'
+import { sequelize } from './services/sequelize'
 
 dotenv.config()
 
 const setup = async () => {
+  await sequelize
+    .authenticate()
+    .then(() => console.log('Database auth ok.'))
+    .catch(console.log)
+
+  await sequelize
+    .sync({ alter: true, force: false, logging: false })
+    .then(() => console.log('Database sync ok.'))
+    .catch(console.log)
+
   const app = express()
 
   app.use(cors())
@@ -23,7 +34,7 @@ const setup = async () => {
       res.send(`
       <h3>Endpoints</h3>
       <ul>
-        ${['login']
+        ${['login', 'register', 'auth']
           .map((v) => `<li><a href="api/auth/${v}">/api/auth/${v}</a></li>`)
           .join('')}
         ${['events', 'project', 'issue', 'getissue', 'search']
@@ -36,7 +47,11 @@ const setup = async () => {
     }
   })
 
-  app.listen(process.env.PORT, () => {
+  const port = process.env.PORT
+
+  if (port === undefined) throw 'Invalid port.'
+
+  app.listen(port, () => {
     console.log(`Listening on port ${process.env.PORT}`)
   })
 }
