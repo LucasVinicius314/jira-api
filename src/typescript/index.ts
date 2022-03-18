@@ -1,7 +1,9 @@
+import { Entities } from './user'
+
 declare global {
   namespace Express {
     interface Request {
-      user: Models.User
+      user: Entities.Common.UserAttributes
     }
   }
 
@@ -11,17 +13,8 @@ declare global {
       PORT?: string
       JIRA_CREDENTIALS: string
       JIRA_URL: string
+      DATABASE_URL: string
+      SALT: string
     }
-  }
-}
-
-export namespace Models {
-  export type User = {
-    id: number
-    email: string
-    password: string
-    username: string
-    updatedAt: Date
-    createdAt: Date
   }
 }

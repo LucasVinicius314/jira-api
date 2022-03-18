@@ -1,5 +1,6 @@
 import * as dotenv from 'dotenv'
 
+import { Entities } from '../typescript/entities'
 import { axios } from '../services/axios'
 
 dotenv.config()
@@ -11,6 +12,10 @@ const url = `https://${jiraUrl}.atlassian.net/rest/api/3/`
 export class Jira {
   static events = async () => {
     return await axios.get(`${url}events`)
+  }
+
+  static project = async () => {
+    return await axios.get<Entities.Jira.Project[]>(`${url}project`)
   }
 
   static issue = async ({ summary }: { summary: string }) => {
@@ -133,5 +138,12 @@ export class Jira {
 
   static getIssue = async ({ id }: { id: string }) => {
     return await axios.get(`${url}issue/${id}`)
+  }
+
+  /**
+   * https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-issue-search/#api-rest-api-3-search-get
+   */
+  static search = async () => {
+    return await axios.get(`${url}search`)
   }
 }

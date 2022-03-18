@@ -1,18 +1,17 @@
 import { Router } from 'express'
+import { errorHandler } from '../middleware/error'
 import { userRouter } from './user'
 import { validationHandler } from '../middleware/jwt'
 
 // import { authRouter } from './auth'
 // import { chatRouter } from './chat'
 // import { commentRouter } from './comment'
-// import { errorHandler } from '../middleware/error'
+
 // import { friendRequestRouter } from './friendrequest'
 // import { friendRouter } from './friend'
 // import { messageRouter } from './message'
 // import { pictureRouter } from './picture'
 // import { postRouter } from './post'
-
-
 
 export const router = Router()
 
@@ -35,4 +34,4 @@ router.use(validationHandler)
 
 // error
 
-// router.use(errorHandler)
+router.use(errorHandler)

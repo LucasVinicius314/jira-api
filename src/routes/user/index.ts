@@ -1,6 +1,5 @@
 import { HttpException } from '../../exceptions/httpexception'
 import { Router } from 'express'
-import { matches } from '../../utils/validation'
 import { sha256 } from '../../utils/crypto'
 import { sign } from '../../middleware/jwt'
 

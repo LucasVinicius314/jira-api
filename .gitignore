@@ -126,7 +126,4 @@ dist
 .yarn/install-state.gz
 .pnp.*
 
-*.pem
-*.srl
-
 build/
