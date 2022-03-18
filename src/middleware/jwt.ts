@@ -1,5 +1,3 @@
-import {} from '../typescript'
-
 import * as dotenv from 'dotenv'
 import * as jwt from 'jsonwebtoken'
 
@@ -25,7 +23,7 @@ export const validationHandler: RequestHandler = (req, res, next) => {
 
     next()
   } catch (error) {
-    next(new HttpException(401, 'Invalid access token'))
+    next(new HttpException(401, 'Invalid access token.'))
   }
 }
 

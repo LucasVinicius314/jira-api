@@ -1,11 +1,67 @@
-import { HttpException } from '../../exceptions/httpexception'
+import { Jira } from '../../models/jira'
 import { Router } from 'express'
-import { sha256 } from '../../utils/crypto'
-import { sign } from '../../middleware/jwt'
 
-export const userRouter = Router()
+export const jiraRouter = Router()
 
-userRouter.post('/profile', async (req, res, next) => {
+jiraRouter.get('/events', async (req, res) => {
+  try {
+    const data = await Jira.events()
+
+    res.json(data.data)
+  } catch (error) {
+    res.status(500).send(error)
+  }
+})
+
+jiraRouter.get('/project', async (req, res) => {
+  try {
+    const data = await Jira.project()
+
+    res.json(data.data)
+  } catch (error) {
+    res.status(500).send(error)
+  }
+})
+
+jiraRouter.get('/issue', async (req, res) => {
+  try {
+    const data = await Jira.issue({ summary: 'marcelo' })
+
+    res.json(data.data)
+  } catch (error) {
+    res.status(500).send(error)
+  }
+})
+
+jiraRouter.get('/getissue', async (req, res) => {
+  try {
+    const projects = await Jira.project()
+
+    const project = projects.data.find((v) => true)
+
+    if (project === undefined) {
+      throw 'Project not found.'
+    }
+
+    const data = await Jira.getIssue({ id: project.id })
+
+    res.json(data.data)
+  } catch (error) {
+    res.status(400).send(error)
+  }
+})
+
+jiraRouter.get('/search', async (req, res) => {
+  try {
+    const data = await Jira.search()
+
+    res.json(data.data)
+  } catch (error) {
+    res.status(400).send(error)
+  }
+})
+
+jiraRouter.post('/profile', async (req, res, next) => {
   // const id = req.body.id
   // try {
   //   const user = await Models.User.findOne({
@@ -22,7 +78,7 @@ userRouter.post('/profile', async (req, res, next) => {
   // }
 })
 
-userRouter.post('/validate', async (req, res, next) => {
+jiraRouter.post('/validate', async (req, res, next) => {
   // try {
   //   const user = await Models.User.findOne({
   //     attributes: {
@@ -39,7 +95,7 @@ userRouter.post('/validate', async (req, res, next) => {
   // }
 })
 
-userRouter.post('/update', async (req, res, next) => {
+jiraRouter.post('/update', async (req, res, next) => {
   // const username = req.body.username
   // const email = req.body.email
   // const password = req.body.password
