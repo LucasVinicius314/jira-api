@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:jira_api/exceptions/invalid_request_exception.dart';
 import 'package:jira_api/models/user_4.dart';
 import 'package:jira_api/modules/main_page.dart';
+import 'package:jira_api/providers/app_provider.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -36,7 +37,9 @@ class _LoginPageState extends State<LoginPage> {
 
       final user = await User.login(email: email, password: password);
 
-      // TODO: fix, provider
+      final provider = AppProvider.of(context);
+
+      provider.user = user;
 
       await Navigator.of(context).pushReplacementNamed(MainPage.route);
     } on InvalidRequestException catch (e) {

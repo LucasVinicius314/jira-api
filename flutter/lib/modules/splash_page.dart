@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:jira_api/models/user_4.dart';
 import 'package:jira_api/modules/login_page.dart';
+import 'package:jira_api/modules/main_page.dart';
+import 'package:jira_api/providers/app_provider.dart';
+import 'package:jira_api/utils/services/shared_preferences.dart';
 
 class SplashPage extends StatefulWidget {
   const SplashPage({Key? key}) : super(key: key);
@@ -16,6 +20,18 @@ class _SplashPageState extends State<SplashPage> {
     super.initState();
 
     Future.delayed(const Duration(seconds: 2), () async {
+      final authorization = await SharedPreferences.authorization;
+
+      if (authorization != null) {
+        final user = await User.auth();
+
+        final provider = AppProvider.of(context);
+
+        provider.user = user;
+
+        await Navigator.of(context).pushReplacementNamed(MainPage.route);
+      }
+
       await Navigator.of(context).pushReplacementNamed(LoginPage.route);
     });
   }

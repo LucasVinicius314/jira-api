@@ -94,6 +94,7 @@ class Api {
         '$method $path$uri ${((response.contentLength ?? 0) / 1000).toStringAsFixed(2)}KB',
       );
       // print(response.body);
+      print(response.headers);
     }
   }
 
