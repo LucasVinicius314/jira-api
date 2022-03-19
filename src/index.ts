@@ -27,7 +27,7 @@ const setup = async () => {
   app.use(json())
   app.use(urlencoded({ extended: true }))
 
-  app.use(express.static('flutter/build/web'))
+  app.use(express.static('app/build/web'))
 
   app.use('/api/', router)
 
