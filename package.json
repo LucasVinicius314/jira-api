@@ -17,7 +17,8 @@
     "@types/cors": "^2.8.12",
     "@types/dotenv": "^8.2.0",
     "@types/express": "^4.17.13",
-    "@types/jsonwebtoken": "^8.5.8"
+    "@types/jsonwebtoken": "^8.5.8",
+    "tsc": "^2.0.4"
   },
   "scripts": {
     "start": "node .",
