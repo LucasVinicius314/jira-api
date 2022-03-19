@@ -27,25 +27,9 @@ const setup = async () => {
   app.use(json())
   app.use(urlencoded({ extended: true }))
 
-  app.use('/api/', router)
+  app.use(express.static('flutter/build/web'))
 
-  app.get('/', async (req, res) => {
-    try {
-      res.send(`
-      <h3>Endpoints</h3>
-      <ul>
-        ${['login', 'register', 'auth']
-          .map((v) => `<li><a href="api/auth/${v}">/api/auth/${v}</a></li>`)
-          .join('')}
-        ${['events', 'project', 'issue', 'getissue', 'search']
-          .map((v) => `<li><a href="api/jira/${v}">/api/jira/${v}</a></li>`)
-          .join('')}
-      </ul>
-      `)
-    } catch (error) {
-      res.status(500).send(error)
-    }
-  })
+  app.use('/api/', router)
 
   const port = process.env.PORT
 

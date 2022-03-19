@@ -16,7 +16,9 @@ class Api {
   ]) {
     final authority = Dotenv.apiAuthority;
 
-    final uriFunction = kReleaseMode ? Uri.https : Uri.http;
+    final local = authority.contains('localhost');
+
+    final uriFunction = local ? Uri.http : Uri.https;
 
     return uriFunction(authority, '$_path$uri', query);
   }
