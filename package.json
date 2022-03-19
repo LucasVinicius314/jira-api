@@ -18,5 +18,14 @@
     "@types/dotenv": "^8.2.0",
     "@types/express": "^4.17.13",
     "@types/jsonwebtoken": "^8.5.8"
+  },
+  "scripts": {
+    "start": "node .",
+    "build": "tsc",
+    "heroku-prebuild": "yarn install",
+    "heroku-postbuild": "tsc"
+  },
+  "engines": {
+    "node": "16.8"
   }
 }

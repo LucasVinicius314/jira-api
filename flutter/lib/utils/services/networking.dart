@@ -16,7 +16,9 @@ class Api {
   ]) {
     final authority = Dotenv.apiAuthority;
 
-    return Uri.http(authority, '$_path$uri', query);
+    final uriFunction = kReleaseMode ? Uri.https : Uri.http;
+
+    return uriFunction(authority, '$_path$uri', query);
   }
 
   static Future<Map<String, String>> get getHeaders async {
