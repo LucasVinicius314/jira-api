@@ -8,9 +8,18 @@ dotenv.config()
 
 const databaseUrl = process.env.DATABASE_URL
 
+const bypassSsl =
+  process.env.NODE_ENV === 'development' && !databaseUrl.includes('localhost')
+
 export const sequelize = new Sequelize(databaseUrl, {
   dialect: 'postgres',
-  ssl: false,
+  ssl: true,
+  dialectOptions: {
+    ssl: {
+      require: true,
+      rejectUnauthorized: !bypassSsl,
+    },
+  },
 })
 
 const baseAttributes = {
