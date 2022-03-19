@@ -144,6 +144,13 @@ export class Jira {
    * https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-issue-search/#api-rest-api-3-search-get
    */
   static search = async () => {
-    return await axios.get(`${url}search`)
+    return await axios.get<{
+      expand: number
+      startAt: number
+      maxResults: number
+      total: number
+      issues: Entities.Jira.Issue[]
+      warningMessages: string[]
+    }>(`${url}search`)
   }
 }
