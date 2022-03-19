@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:jira_api/exceptions/invalid_request_exception.dart';
+import 'package:jira_api/utils/services/dotenv.dart';
 import 'package:jira_api/utils/services/shared_preferences.dart';
 
 class Api {
@@ -13,7 +14,7 @@ class Api {
     String uri, [
     Map<String, dynamic>? query,
   ]) {
-    const authority = 'localhost:4006';
+    final authority = Dotenv.apiAuthority;
 
     return Uri.http(authority, '$_path$uri', query);
   }
