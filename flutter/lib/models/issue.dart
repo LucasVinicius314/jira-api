@@ -20,9 +20,7 @@ class Issue {
   });
 
   static Future<Search> search() async {
-    return Search.fromJson(await Api.get('jira/search', {
-      'fields': 'summary,description',
-    }));
+    return Search.fromJson(await Api.get('jira/search'));
   }
 
   factory Issue.fromJson(Map<String, dynamic> json) => _$IssueFromJson(json);
@@ -35,7 +33,6 @@ class Fields {
   final dynamic watcher;
   final dynamic attachment;
   // final dynamic sub-tasks;
-  final Description? description;
   final dynamic project;
   final dynamic comment;
   final dynamic issueLinks;
@@ -43,12 +40,13 @@ class Fields {
   final dynamic updated;
   final dynamic timetracking;
   final String? summary;
+  final Description? description;
+  final Status? status;
 
   Fields({
     required this.watcher,
     required this.attachment,
     // required this.sub-tasks,
-    required this.description,
     required this.project,
     required this.comment,
     required this.issueLinks,
@@ -56,6 +54,8 @@ class Fields {
     required this.updated,
     required this.timetracking,
     required this.summary,
+    required this.description,
+    required this.status,
   });
 
   factory Fields.fromJson(Map<String, dynamic> json) => _$FieldsFromJson(json);
@@ -114,4 +114,49 @@ class Description {
       _$DescriptionFromJson(json);
 
   Map<String, dynamic> toJson() => _$DescriptionToJson(this);
+}
+
+@JsonSerializable(fieldRename: FieldRename.none, explicitToJson: true)
+class Status {
+  final String self;
+  final String description;
+  final String iconUrl;
+  final String name;
+  final String id;
+  final StatusCategory statusCategory;
+
+  Status({
+    required this.self,
+    required this.description,
+    required this.iconUrl,
+    required this.name,
+    required this.id,
+    required this.statusCategory,
+  });
+
+  factory Status.fromJson(Map<String, dynamic> json) => _$StatusFromJson(json);
+
+  Map<String, dynamic> toJson() => _$StatusToJson(this);
+}
+
+@JsonSerializable(fieldRename: FieldRename.none, explicitToJson: true)
+class StatusCategory {
+  final String self;
+  final int id;
+  final String key;
+  final String colorName;
+  final String name;
+
+  StatusCategory({
+    required this.self,
+    required this.id,
+    required this.key,
+    required this.colorName,
+    required this.name,
+  });
+
+  factory StatusCategory.fromJson(Map<String, dynamic> json) =>
+      _$StatusCategoryFromJson(json);
+
+  Map<String, dynamic> toJson() => _$StatusCategoryToJson(this);
 }

@@ -25,9 +25,6 @@ Map<String, dynamic> _$IssueToJson(Issue instance) => <String, dynamic>{
 Fields _$FieldsFromJson(Map<String, dynamic> json) => Fields(
       watcher: json['watcher'],
       attachment: json['attachment'],
-      description: json['description'] == null
-          ? null
-          : Description.fromJson(json['description'] as Map<String, dynamic>),
       project: json['project'],
       comment: json['comment'],
       issueLinks: json['issueLinks'],
@@ -35,12 +32,17 @@ Fields _$FieldsFromJson(Map<String, dynamic> json) => Fields(
       updated: json['updated'],
       timetracking: json['timetracking'],
       summary: json['summary'] as String?,
+      description: json['description'] == null
+          ? null
+          : Description.fromJson(json['description'] as Map<String, dynamic>),
+      status: json['status'] == null
+          ? null
+          : Status.fromJson(json['status'] as Map<String, dynamic>),
     );
 
 Map<String, dynamic> _$FieldsToJson(Fields instance) => <String, dynamic>{
       'watcher': instance.watcher,
       'attachment': instance.attachment,
-      'description': instance.description?.toJson(),
       'project': instance.project,
       'comment': instance.comment,
       'issueLinks': instance.issueLinks,
@@ -48,6 +50,8 @@ Map<String, dynamic> _$FieldsToJson(Fields instance) => <String, dynamic>{
       'updated': instance.updated,
       'timetracking': instance.timetracking,
       'summary': instance.summary,
+      'description': instance.description?.toJson(),
+      'status': instance.status?.toJson(),
     };
 
 Search _$SearchFromJson(Map<String, dynamic> json) => Search(
@@ -87,4 +91,41 @@ Map<String, dynamic> _$DescriptionToJson(Description instance) =>
       'version': instance.version,
       'text': instance.text,
       'content': instance.content?.map((e) => e.toJson()).toList(),
+    };
+
+Status _$StatusFromJson(Map<String, dynamic> json) => Status(
+      self: json['self'] as String,
+      description: json['description'] as String,
+      iconUrl: json['iconUrl'] as String,
+      name: json['name'] as String,
+      id: json['id'] as String,
+      statusCategory: StatusCategory.fromJson(
+          json['statusCategory'] as Map<String, dynamic>),
+    );
+
+Map<String, dynamic> _$StatusToJson(Status instance) => <String, dynamic>{
+      'self': instance.self,
+      'description': instance.description,
+      'iconUrl': instance.iconUrl,
+      'name': instance.name,
+      'id': instance.id,
+      'statusCategory': instance.statusCategory.toJson(),
+    };
+
+StatusCategory _$StatusCategoryFromJson(Map<String, dynamic> json) =>
+    StatusCategory(
+      self: json['self'] as String,
+      id: json['id'] as int,
+      key: json['key'] as String,
+      colorName: json['colorName'] as String,
+      name: json['name'] as String,
+    );
+
+Map<String, dynamic> _$StatusCategoryToJson(StatusCategory instance) =>
+    <String, dynamic>{
+      'self': instance.self,
+      'id': instance.id,
+      'key': instance.key,
+      'colorName': instance.colorName,
+      'name': instance.name,
     };

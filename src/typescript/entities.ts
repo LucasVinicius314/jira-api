@@ -30,7 +30,7 @@ export namespace Entities.Jira {
     self: string
     key: string
     fields: {
-      watcher: {
+      watcher?: {
         self: string
         isWatching: boolean
         watchCount: number
@@ -43,8 +43,8 @@ export namespace Entities.Jira {
           }
         ]
       }
-      attachment: Attachment[]
-      'sub-tasks': [
+      attachment?: Attachment[]
+      'sub-tasks'?: [
         {
           id: '10000'
           type: {
@@ -98,8 +98,8 @@ export namespace Entities.Jira {
           }
         ]
       }
-      project: Project
-      comment: [
+      project?: Project
+      comment?: [
         {
           self: 'https://your-domain.atlassian.net/rest/api/3/issue/10010/comment/10000'
           id: '10000'
@@ -138,7 +138,7 @@ export namespace Entities.Jira {
           }
         }
       ]
-      issuelinks: [
+      issuelinks?: [
         {
           id: '10001'
           type: {
@@ -180,9 +180,9 @@ export namespace Entities.Jira {
           }
         }
       ]
-      worklog: Worklog[]
-      updated: number
-      timetracking: {
+      worklog?: Worklog[]
+      updated?: number
+      timetracking?: {
         originalEstimate: string
         remainingEstimate: string
         timeSpent: string

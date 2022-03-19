@@ -151,6 +151,10 @@ export class Jira {
       total: number
       issues: Entities.Jira.Issue[]
       warningMessages: string[]
-    }>(`${url}search`)
+    }>(`${url}search`, {
+      params: {
+        fields: 'summary,description,status',
+      },
+    })
   }
 }

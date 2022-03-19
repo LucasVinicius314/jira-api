@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:jira_api/models/issue.dart';
 import 'package:jira_api/models/project.dart';
 import 'package:jira_api/modules/splash_page.dart';
 import 'package:jira_api/providers/app_provider.dart';
+import 'package:jira_api/widgets/issues_widget.dart';
 import 'package:provider/provider.dart';
 
 class MainPage extends StatefulWidget {
@@ -81,108 +81,29 @@ class _MainPageState extends State<MainPage> {
             final project = projects.first;
 
             return ListView(
+              padding: const EdgeInsets.only(bottom: 128),
               children: [
                 Padding(
-                  padding: const EdgeInsets.all(16),
-                  child: Text(
-                    project.name,
-                    style: Theme.of(context).textTheme.headline6,
+                  padding: const EdgeInsets.only(
+                    top: 16,
+                    left: 16,
+                    right: 16,
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      Text(
+                        project.name,
+                        style: Theme.of(context).textTheme.headline6,
+                      ),
+                      Text(
+                        project.key,
+                        style: Theme.of(context).textTheme.caption,
+                      ),
+                    ],
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: Text(
-                    'Issues',
-                    style: Theme.of(context).textTheme.subtitle1,
-                  ),
-                ),
-                FutureBuilder<Search>(
-                  future: Issue.search(),
-                  builder: (context, snapshot) {
-                    if (snapshot.hasError) {
-                      return Text(snapshot.error.toString());
-                    }
-
-                    if (snapshot.connectionState == ConnectionState.done) {
-                      final issues = snapshot.data?.issues ?? [];
-
-                      if (issues.isEmpty) {
-                        return const Text('No issues found.');
-                      }
-
-                      return GridView.builder(
-                        shrinkWrap: true,
-                        itemCount: issues.length,
-                        padding: const EdgeInsets.all(16),
-                        gridDelegate:
-                            const SliverGridDelegateWithMaxCrossAxisExtent(
-                          mainAxisSpacing: 8,
-                          crossAxisSpacing: 8,
-                          mainAxisExtent: 180,
-                          maxCrossAxisExtent: 300,
-                        ),
-                        itemBuilder: (context, index) {
-                          final issue = issues.elementAt(index);
-
-                          return Card(
-                            margin: EdgeInsets.zero,
-                            clipBehavior: Clip.antiAlias,
-                            child: InkWell(
-                              onTap: () {
-                                // TODO: fix
-                              },
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.stretch,
-                                children: [
-                                  Expanded(
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(16),
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.stretch,
-                                        children: [
-                                          Text(
-                                            issue.fields.summary ?? '',
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .bodyText1,
-                                          ),
-                                          Text(
-                                            issue.fields.description
-                                                    ?.compute() ??
-                                                '',
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                  const Divider(height: 0),
-                                  Padding(
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 16,
-                                      vertical: 8,
-                                    ),
-                                    child: Text(
-                                      issue.key,
-                                      textAlign: TextAlign.end,
-                                      style:
-                                          Theme.of(context).textTheme.caption,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          );
-                        },
-                      );
-                    }
-
-                    return const Padding(
-                      padding: EdgeInsets.all(32),
-                      child: Center(child: CircularProgressIndicator()),
-                    );
-                  },
-                )
+                IssuesWidget(project: project),
               ],
             );
           }
