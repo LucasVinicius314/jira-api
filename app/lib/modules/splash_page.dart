@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:jira_api/models/user_4.dart';
 import 'package:jira_api/modules/login_page.dart';
@@ -20,27 +21,35 @@ class _SplashPageState extends State<SplashPage> {
     super.initState();
 
     Future.delayed(const Duration(seconds: 2), () async {
-      final authorization = await SharedPreferences.authorization;
+      try {
+        final authorization = await SharedPreferences.authorization;
 
-      if (authorization != null) {
-        final user = await User.auth();
+        if (authorization != null) {
+          final user = await User.auth();
 
-        final provider = AppProvider.of(context);
+          final provider = AppProvider.of(context);
 
-        provider.user = user;
+          provider.user = user;
 
-        await Navigator.of(context).pushReplacementNamed(MainPage.route);
+          await Navigator.of(context).pushReplacementNamed(MainPage.route);
+        }
+
+        await Navigator.of(context).pushReplacementNamed(LoginPage.route);
+      } catch (e) {
+        if (kDebugMode) rethrow;
+
+        await Navigator.of(context).pushReplacementNamed(LoginPage.route);
       }
-
-      await Navigator.of(context).pushReplacementNamed(LoginPage.route);
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return const Padding(
-      padding: EdgeInsets.all(32),
-      child: Center(child: CircularProgressIndicator()),
+    return const Scaffold(
+      body: Padding(
+        padding: EdgeInsets.all(32),
+        child: Center(child: CircularProgressIndicator()),
+      ),
     );
   }
 }
