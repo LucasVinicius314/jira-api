@@ -1,4 +1,4 @@
-export namespace Entities.Jira {
+export namespace JiraEntities {
   export type Project = {
     self: string
     id: string

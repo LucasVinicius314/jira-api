@@ -6,13 +6,9 @@ dotenv.config()
 
 export const axios = Axios
 
-axios.interceptors.request.use((value) => {
-  const credentials = process.env['JIRA_CREDENTIALS']
+// axios.interceptors.request.use((value) => {
 
-  value.headers = {
-    Accept: 'application/json',
-    Authorization: `Basic ${Buffer.from(credentials).toString('base64')}`,
-  }
+//   value.headers =
 
-  return value
-})
+//   return value
+// })

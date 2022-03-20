@@ -1,9 +1,9 @@
-import { Entities } from './user'
+import { CommonEntities } from './user'
 
 declare global {
   namespace Express {
     interface Request {
-      user: Entities.Common.UserAttributes
+      user: CommonEntities.UserAttributes
     }
   }
 
@@ -11,8 +11,6 @@ declare global {
     interface ProcessEnv {
       NODE_ENV: 'development' | 'production'
       PORT?: string
-      JIRA_CREDENTIALS: string
-      JIRA_URL: string
       DATABASE_URL: string
       SALT: string
     }

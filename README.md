@@ -15,8 +15,6 @@ Don't forget to set up your own `.env` config file for the back end, using the `
 ## Configuration
 
 ```diff
-JIRA_CREDENTIALS => your Jira API access key
-JIRA_URL         => your project's key
 PORT             => the port that the back end will be running on
 DATABASE_URL     => your PostgreSQL connection string
 SECRET           => the secret that will be used to sign JWTs

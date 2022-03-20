@@ -1,7 +1,7 @@
 import * as dotenv from 'dotenv'
 import * as jwt from 'jsonwebtoken'
 
-import { Entities } from '../typescript/user'
+import { CommonEntities } from '../typescript/user'
 import { HttpException } from '../exceptions/httpexception'
 import { RequestHandler } from 'express'
 
@@ -18,7 +18,7 @@ export const validationHandler: RequestHandler = (req, res, next) => {
     const decoded = jwt.verify(
       token,
       secret
-    ) as unknown as Entities.Common.UserAttributes
+    ) as unknown as CommonEntities.UserAttributes
 
     req.user = decoded
 
@@ -28,7 +28,7 @@ export const validationHandler: RequestHandler = (req, res, next) => {
   }
 }
 
-export const sign = (user: Entities.Common.UserAttributes) => {
+export const sign = (user: CommonEntities.UserAttributes) => {
   const secret = process.env.SECRET
 
   if (secret === undefined) throw 'Invalid secret.'

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:jira_api/models/project.dart';
 import 'package:jira_api/modules/splash_page.dart';
 import 'package:jira_api/providers/app_provider.dart';
+import 'package:jira_api/utils/services/shared_preferences.dart';
 import 'package:jira_api/widgets/issues_widget.dart';
 import 'package:provider/provider.dart';
 
@@ -17,6 +18,12 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> {
   Future<void> _newIssue() async {
     // TODO: fix
+  }
+
+  Future<void> _logout() async {
+    await SharedPreferences.setAuthorization(null);
+
+    await Navigator.of(context).pushReplacementNamed(SplashPage.route);
   }
 
   @override
@@ -61,10 +68,14 @@ class _MainPageState extends State<MainPage> {
                 );
               },
             ),
+            ListTile(
+              onTap: _logout,
+              title: const Text('Logout'),
+            ),
           ],
         ),
       ),
-      body: FutureBuilder<Iterable<Project>>(
+      body: FutureBuilder<Project>(
         future: Project.project(),
         builder: (context, snapshot) {
           if (snapshot.hasError) {
@@ -72,13 +83,17 @@ class _MainPageState extends State<MainPage> {
           }
 
           if (snapshot.connectionState == ConnectionState.done) {
-            final projects = snapshot.data ?? [];
+            final project = snapshot.data;
 
-            if (projects.length != 1) {
-              return const Text('More than one available project.');
+            if (project == null) {
+              return const Padding(
+                padding: EdgeInsets.all(32),
+                child: Text(
+                  'Project not found.',
+                  textAlign: TextAlign.center,
+                ),
+              );
             }
-
-            final project = projects.first;
 
             return ListView(
               padding: const EdgeInsets.only(bottom: 128),

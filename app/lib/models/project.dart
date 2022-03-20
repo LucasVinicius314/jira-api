@@ -27,9 +27,10 @@ class Project {
     required this.insight,
   });
 
-  static Future<Iterable<Project>> project() async {
-    return ((await Api.get('jira/project')) as List)
-        .map((e) => Project.fromJson(e));
+  static Future<Project> project() async {
+    final req = await Api.get('jira/project');
+
+    return Project.fromJson(req);
   }
 
   factory Project.fromJson(Map<String, dynamic> json) =>

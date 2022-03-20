@@ -41,6 +41,9 @@ mainAuthRouter.post('/register', async (req, res, next) => {
   const password = req.body.password
   const username = req.body.username
   const key = req.body.key
+  const projectKey = req.body.projectKey
+  const teamKey = req.body.teamKey
+  const apiKey = req.body.apiKey
 
   try {
     const masterKey = process.env['MASTER_KEY']
@@ -50,7 +53,14 @@ mainAuthRouter.post('/register', async (req, res, next) => {
     const user = await DBEntities.User.create({
       email: email,
       password: sha256(password),
+      projectKey: projectKey,
+      teamKey: teamKey,
       username: username,
+    })
+
+    await DBEntities.ApiKey.create({
+      key: apiKey,
+      userId: user.id,
     })
 
     res.setHeader('authorization', sign(user.get()))

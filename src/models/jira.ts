@@ -1,25 +1,50 @@
 import * as dotenv from 'dotenv'
 
-import { Entities } from '../typescript/entities'
+import { CommonEntities } from '../typescript/user'
+import { DBEntities } from '../services/sequelize'
+import { HttpException } from '../exceptions/httpexception'
+import { JiraEntities } from '../typescript/entities'
 import { axios } from '../services/axios'
 
 dotenv.config()
 
-const jiraUrl = process.env['JIRA_URL']
-
-const url = `https://${jiraUrl}.atlassian.net/rest/api/3/`
-
 export class Jira {
-  static events = async () => {
-    return await axios.get(`${url}events`)
+  static getHeaders = async (user: CommonEntities.UserAttributes) => {
+    const key = await DBEntities.ApiKey.findOne({
+      where: {
+        userId: user.id,
+      },
+    })
+
+    if (key == null) throw new HttpException(400, 'Key not found.')
+
+    const credentials = key.key
+
+    const headers = {
+      Accept: 'application/json',
+      Authorization: `Basic ${Buffer.from(credentials).toString('base64')}`,
+    }
+
+    return headers
   }
 
-  static project = async () => {
-    return await axios.get<Entities.Jira.Project[]>(`${url}project`)
+  static url = async (path: string, user: CommonEntities.UserAttributes) => {
+    return `https://${user.projectKey}.atlassian.net/rest/api/3/${path}`
+  }
+
+  static events = async (user: CommonEntities.UserAttributes) => {
+    return await axios.get(await this.url('events', user))
+  }
+
+  static project = async (user: CommonEntities.UserAttributes) => {
+    return await axios.get<JiraEntities.Project[]>(
+      await this.url('project', user),
+      { headers: await this.getHeaders(user) }
+    )
   }
 
   static issue = async ({ summary }: { summary: string }) => {
-    return await axios.post(`${url}issue`, {
+    return await axios.post(`issue`, {
       fields: {
         summary: summary,
         // parent: {
@@ -137,24 +162,27 @@ export class Jira {
   }
 
   static getIssue = async ({ id }: { id: string }) => {
-    return await axios.get(`${url}issue/${id}`)
+    // fix
+    return await axios.get(`issue/${id}`)
   }
 
   /**
    * https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-issue-search/#api-rest-api-3-search-get
    */
-  static search = async () => {
+  static search = async (user: CommonEntities.UserAttributes) => {
     return await axios.get<{
       expand: number
       startAt: number
       maxResults: number
       total: number
-      issues: Entities.Jira.Issue[]
+      issues: JiraEntities.Issue[]
       warningMessages: string[]
-    }>(`${url}search`, {
+    }>(await this.url('search', user), {
       params: {
         fields: 'summary,description,status',
+        jql: `project = ${user.teamKey}`,
       },
+      headers: await this.getHeaders(user),
     })
   }
 }

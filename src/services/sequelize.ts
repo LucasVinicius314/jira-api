@@ -2,7 +2,7 @@ import * as dotenv from 'dotenv'
 
 import { DataTypes, Sequelize } from 'sequelize'
 
-import { Entities } from '../typescript/user'
+import { CommonEntities } from '../typescript/user'
 
 dotenv.config()
 
@@ -33,7 +33,7 @@ const baseAttributes = {
   },
 }
 
-const User = sequelize.define<Entities.Common.UserInstance>('user', {
+const User = sequelize.define<CommonEntities.UserInstance>('user', {
   ...baseAttributes,
   email: {
     type: DataTypes.STRING,
@@ -41,6 +41,14 @@ const User = sequelize.define<Entities.Common.UserInstance>('user', {
     unique: true,
   },
   password: {
+    type: DataTypes.STRING(256),
+    allowNull: false,
+  },
+  projectKey: {
+    type: DataTypes.STRING(256),
+    allowNull: false,
+  },
+  teamKey: {
     type: DataTypes.STRING(256),
     allowNull: false,
   },
@@ -58,6 +66,26 @@ User.prototype.toJSON = function () {
   return values
 }
 
+const ApiKey = sequelize.define<CommonEntities.ApiKeyInstance>('api_key', {
+  ...baseAttributes,
+  key: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    unique: true,
+  },
+  userId: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    unique: true,
+  },
+})
+
+// User -> ApiKey
+
+User.hasMany(ApiKey, { foreignKey: 'userId' })
+ApiKey.belongsTo(User, { foreignKey: 'userId' })
+
 export const DBEntities = {
   User,
+  ApiKey,
 }
