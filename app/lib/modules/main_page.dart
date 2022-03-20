@@ -17,7 +17,16 @@ class MainPage extends StatefulWidget {
 
 class _MainPageState extends State<MainPage> {
   Future<void> _newIssue() async {
-    // TODO: fix
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        behavior: SnackBarBehavior.floating,
+        content: const Text('Work in progress.'),
+        action: SnackBarAction(
+          label: 'OK',
+          onPressed: () {},
+        ),
+      ),
+    );
   }
 
   Future<void> _logout() async {
@@ -48,7 +57,7 @@ class _MainPageState extends State<MainPage> {
       floatingActionButton: FloatingActionButton.extended(
         onPressed: _newIssue,
         icon: const Icon(Icons.add),
-        label: const Text('New issue'),
+        label: const Text('NEW ISSUE'),
       ),
       drawer: Drawer(
         child: ListView(

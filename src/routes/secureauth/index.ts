@@ -9,6 +9,8 @@ secureAuthRouter.get('/auth', async (req, res, next) => {
 
     res.json(user)
   } catch (error) {
+    console.error(error)
+
     next(new HttpException(400, 'Invalid auth data.'))
   }
 })

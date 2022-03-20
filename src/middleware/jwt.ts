@@ -12,8 +12,13 @@ export const validationHandler: RequestHandler = (req, res, next) => {
     const token = req.headers.authorization
     const secret = process.env.SECRET
 
-    if (token === undefined) throw 'Invalid token.'
-    if (secret === undefined) throw 'Invalid secret.'
+    if (token === undefined) {
+      throw new HttpException(401, 'Invalid access token.')
+    }
+
+    if (secret === undefined) {
+      throw new HttpException(401, 'Invalid secret.')
+    }
 
     const decoded = jwt.verify(
       token,
@@ -24,14 +29,26 @@ export const validationHandler: RequestHandler = (req, res, next) => {
 
     next()
   } catch (error) {
+    if (error instanceof HttpException) {
+      next(error)
+
+      return
+    }
+
     next(new HttpException(401, 'Invalid access token.'))
   }
 }
 
 export const sign = (user: CommonEntities.UserAttributes) => {
-  const secret = process.env.SECRET
+  try {
+    const secret = process.env.SECRET
 
-  if (secret === undefined) throw 'Invalid secret.'
+    if (secret === undefined) {
+      throw new HttpException(401, 'Invalid secret.')
+    }
 
-  return jwt.sign(user, secret)
+    return jwt.sign(user, secret)
+  } catch (error) {
+    throw new HttpException(401, 'Invalid secret.')
+  }
 }

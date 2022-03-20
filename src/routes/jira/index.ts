@@ -10,6 +10,8 @@ jiraRouter.get('/events', async (req, res) => {
 
     res.json(data.data)
   } catch (error) {
+    console.error(error)
+
     res.status(500).send(error)
   }
 })
@@ -30,6 +32,8 @@ jiraRouter.get('/project', async (req, res) => {
 
     res.json(project)
   } catch (error) {
+    console.error(error)
+
     res.status(500).send(error)
   }
 })
@@ -40,6 +44,8 @@ jiraRouter.get('/issue', async (req, res) => {
 
     res.json(data.data)
   } catch (error) {
+    console.error(error)
+
     res.status(500).send(error)
   }
 })
@@ -58,6 +64,8 @@ jiraRouter.get('/getissue', async (req, res) => {
 
     res.json(data.data)
   } catch (error) {
+    console.error(error)
+
     res.status(400).send(error)
   }
 })
@@ -68,8 +76,8 @@ jiraRouter.get('/search', async (req, res) => {
 
     res.json(data.data)
   } catch (error) {
-    error
     console.error(error)
+
     res.status(400).send(error)
   }
 })

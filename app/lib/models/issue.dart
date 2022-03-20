@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:jira_api/utils/services/networking.dart';
 import 'package:json_annotation/json_annotation.dart';
 
@@ -93,11 +94,23 @@ class Description {
   final String? text;
   final List<Description>? content;
 
+  Widget computeWidget() {
+    if (text != null) return Text(text ?? '');
+
+    if (content != null) {
+      return Column(
+        children: (content ?? []).map((e) => e.computeWidget()).toList(),
+      );
+    }
+
+    return const Text('');
+  }
+
   String compute() {
     if (text != null) return text ?? '';
 
     if (content != null) {
-      return (content ?? []).map((e) => e.compute()).join('');
+      return (content ?? []).map((e) => e.compute()).join('\n\n');
     }
 
     return '';

@@ -91,15 +91,29 @@ class _LoginPageState extends State<LoginPage> {
                           crossAxisAlignment: CrossAxisAlignment.stretch,
                           children: [
                             Padding(
+                              padding: const EdgeInsets.only(
+                                top: 16,
+                                left: 16,
+                                right: 16,
+                                bottom: 8,
+                              ),
+                              child: Text(
+                                'Hello there!',
+                                style: Theme.of(context).textTheme.headline6,
+                              ),
+                            ),
+                            const Divider(),
+                            Padding(
                               padding: const EdgeInsets.symmetric(
                                 horizontal: 16,
                               ),
                               child: TextFormField(
                                 focusNode: _emailFocusNode,
                                 controller: _emailController,
+                                keyboardType: TextInputType.emailAddress,
                                 decoration: const InputDecoration(
                                   label: Text('Email'),
-                                  alignLabelWithHint: true,
+                                  icon: Icon(Icons.mail),
                                 ),
                                 validator: (value) {
                                   value ??= '';
@@ -118,9 +132,10 @@ class _LoginPageState extends State<LoginPage> {
                                 obscureText: true,
                                 focusNode: _passwordFocusNode,
                                 controller: _passwordController,
+                                keyboardType: TextInputType.visiblePassword,
                                 decoration: const InputDecoration(
+                                  icon: Icon(Icons.lock),
                                   label: Text('Password'),
-                                  alignLabelWithHint: true,
                                 ),
                                 validator: (value) {
                                   value ??= '';
