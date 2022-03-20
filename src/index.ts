@@ -27,6 +27,7 @@ const setup = async () => {
   app.use(json())
   app.use(urlencoded({ extended: true }))
 
+  app.use(express.static('public_html'))
   app.use(express.static('app/build/web'))
 
   app.use('/api/', router)
