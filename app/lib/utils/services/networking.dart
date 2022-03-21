@@ -3,9 +3,9 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
-import 'package:jira_api/exceptions/invalid_request_exception.dart';
-import 'package:jira_api/utils/services/dotenv.dart';
-import 'package:jira_api/utils/services/shared_preferences.dart';
+import 'package:sure_project_manager/exceptions/invalid_request_exception.dart';
+import 'package:sure_project_manager/utils/services/dotenv.dart';
+import 'package:sure_project_manager/utils/services/shared_preferences.dart';
 
 class Api {
   static String get _path => '/api/';

@@ -1,4 +1,4 @@
-import 'package:jira_api/utils/services/networking.dart';
+import 'package:sure_project_manager/utils/services/networking.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 part 'user_4.g.dart';

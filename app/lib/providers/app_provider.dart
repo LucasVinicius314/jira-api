@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:jira_api/models/user_4.dart';
+import 'package:sure_project_manager/models/user_4.dart';
 import 'package:provider/provider.dart';
 
 class AppProvider with ChangeNotifier {

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:jira_api/models/issue.dart';
-import 'package:jira_api/models/project.dart';
+import 'package:sure_project_manager/models/issue.dart';
+import 'package:sure_project_manager/models/project.dart';
 
 class IssuesWidget extends StatefulWidget {
   const IssuesWidget({Key? key, required this.project}) : super(key: key);

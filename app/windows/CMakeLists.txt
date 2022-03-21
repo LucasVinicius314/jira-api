@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.14)
-project(jira_api LANGUAGES CXX)
+project(sure_project_manager LANGUAGES CXX)
 
-set(BINARY_NAME "jira_api")
+set(BINARY_NAME "sure_project_manager")
 
 cmake_policy(SET CMP0063 NEW)
 

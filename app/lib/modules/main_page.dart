@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:jira_api/models/project.dart';
-import 'package:jira_api/modules/splash_page.dart';
-import 'package:jira_api/providers/app_provider.dart';
-import 'package:jira_api/utils/services/shared_preferences.dart';
-import 'package:jira_api/widgets/issues_widget.dart';
+import 'package:sure_project_manager/models/project.dart';
+import 'package:sure_project_manager/modules/splash_page.dart';
+import 'package:sure_project_manager/providers/app_provider.dart';
+import 'package:sure_project_manager/utils/services/shared_preferences.dart';
+import 'package:sure_project_manager/widgets/issues_widget.dart';
 import 'package:provider/provider.dart';
 
 class MainPage extends StatefulWidget {

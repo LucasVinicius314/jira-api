@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:jira_api/modules/login_page.dart';
-import 'package:jira_api/modules/main_page.dart';
-import 'package:jira_api/modules/splash_page.dart';
-import 'package:jira_api/providers/app_provider.dart';
+import 'package:sure_project_manager/modules/login_page.dart';
+import 'package:sure_project_manager/modules/main_page.dart';
+import 'package:sure_project_manager/modules/splash_page.dart';
+import 'package:sure_project_manager/providers/app_provider.dart';
 import 'package:provider/provider.dart';
 
 final buttonStyle = ButtonStyle(
