@@ -1,11 +1,11 @@
 {
-  "name": "Jira API",
-  "short_name": "Jira API",
+  "name": "Sure Project Manager",
+  "short_name": "Sure Project Manager",
   "start_url": ".",
   "display": "standalone",
   "background_color": "#ffa000",
   "theme_color": "#ffa000",
-  "description": "The Jira API.",
+  "description": "Sure Project Manager.",
   "orientation": "portrait-primary",
   "prefer_related_applications": false,
   "icons": [

@@ -53,7 +53,7 @@ class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Jira API')),
+      appBar: AppBar(title: const Text('Sure Project Manager')),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: _newIssue,
         icon: const Icon(Icons.add),

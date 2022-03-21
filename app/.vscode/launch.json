@@ -8,7 +8,12 @@
       "name": "flutter",
       "request": "launch",
       "type": "dart",
-      "toolArgs": ["--dart-define", "API_AUTHORITY=localhost:4006"]
+      "toolArgs": [
+        "--dart-define",
+        "API_AUTHORITY=localhost:4006",
+        "--dart-define",
+        "SSL_MODE=dev"
+      ]
     },
     {
       "name": "flutter (profile mode)",

@@ -14,9 +14,10 @@ class Api {
     String uri, [
     Map<String, dynamic>? query,
   ]) {
+    final sslMode = Dotenv.sslMode;
     final authority = Dotenv.apiAuthority;
 
-    final local = authority.contains('localhost');
+    final local = sslMode.contains('dev');
 
     final uriFunction = local ? Uri.http : Uri.https;
 

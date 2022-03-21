@@ -1,9 +1,9 @@
 name: sure_project_manager
-description: A new Flutter project.
+description: Sure Project Manager.
 
 publish_to: "none"
 
-version: 1.0.0+1
+version: 0.0.1+1
 
 environment:
   sdk: ">=2.15.1 <3.0.0"
