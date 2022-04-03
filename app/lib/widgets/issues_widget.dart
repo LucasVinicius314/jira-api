@@ -83,6 +83,7 @@ class _IssuesWidgetState extends State<IssuesWidget> {
                 shrinkWrap: true,
                 itemCount: issues.length,
                 padding: const EdgeInsets.all(16),
+                physics: const NeverScrollableScrollPhysics(),
                 gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
                   mainAxisSpacing: 8,
                   crossAxisSpacing: 8,
