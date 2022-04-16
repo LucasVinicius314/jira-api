@@ -71,7 +71,6 @@ const ApiKey = sequelize.define<CommonEntities.ApiKeyInstance>('api_key', {
   key: {
     type: DataTypes.STRING,
     allowNull: false,
-    unique: true,
   },
   userId: {
     type: DataTypes.INTEGER,
