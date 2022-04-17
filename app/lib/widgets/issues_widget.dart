@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:sure_project_manager/models/issue.dart';
 import 'package:sure_project_manager/models/project.dart';
+import 'package:sure_project_manager/utils/services/pdf.dart';
+import 'package:sure_project_manager/widgets/issue_dialog_widget.dart';
 
 class IssuesWidget extends StatefulWidget {
   const IssuesWidget({Key? key, required this.project}) : super(key: key);
@@ -13,6 +15,48 @@ class IssuesWidget extends StatefulWidget {
 
 class _IssuesWidgetState extends State<IssuesWidget> {
   Future<Search>? _searchFuture;
+
+  Future<void> _export() async {
+    final search = await _searchFuture;
+
+    final issues = search?.issues ?? [];
+
+    try {
+      await exportIssues(issues: issues);
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          behavior: SnackBarBehavior.floating,
+          content: const Text('Data exported. Check your downloads folder.'),
+          action: SnackBarAction(
+            label: 'OK',
+            onPressed: () {},
+          ),
+        ),
+      );
+    } catch (e) {
+      await showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: const Text('Warning'),
+            content: const Text(
+              'Something went wrong when exporting - make sure you\'ve configured your export settings correctly.',
+            ),
+            actions: [
+              TextButton(
+                style: TextButton.styleFrom(primary: Colors.green),
+                child: const Text('OK'),
+                onPressed: () async {
+                  await Navigator.of(context).maybePop();
+                },
+              ),
+            ],
+          );
+        },
+      );
+    }
+  }
 
   void _fetchSearch() async {
     setState(() {
@@ -39,18 +83,38 @@ class _IssuesWidgetState extends State<IssuesWidget> {
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
           ),
-          trailing: FutureBuilder(
-            future: _searchFuture,
-            builder: (context, snapshot) {
-              final waiting =
-                  snapshot.connectionState == ConnectionState.waiting;
+          trailing: Wrap(
+            children: [
+              FutureBuilder(
+                future: _searchFuture,
+                builder: (context, snapshot) {
+                  final waiting =
+                      snapshot.connectionState == ConnectionState.waiting;
 
-              return IconButton(
-                tooltip: 'Refresh issues',
-                icon: const Icon(Icons.refresh),
-                onPressed: waiting ? null : _fetchSearch,
-              );
-            },
+                  return IconButton(
+                    tooltip: 'Refresh issues',
+                    icon: const Icon(Icons.refresh),
+                    onPressed: waiting ? null : _fetchSearch,
+                  );
+                },
+              ),
+              const SizedBox(width: 16),
+              FutureBuilder<Search>(
+                future: _searchFuture,
+                builder: (context, snapshot) {
+                  final waiting =
+                      snapshot.connectionState == ConnectionState.waiting;
+
+                  final disabled = snapshot.data?.issues.isEmpty ?? true;
+
+                  return IconButton(
+                    tooltip: 'Export issues',
+                    icon: const Icon(Icons.download),
+                    onPressed: waiting || disabled ? null : _export,
+                  );
+                },
+              ),
+            ],
           ),
         ),
         FutureBuilder<Search>(
@@ -94,8 +158,6 @@ class _IssuesWidgetState extends State<IssuesWidget> {
                   final issue = issues.elementAt(index);
 
                   Future<void> onTap() async {
-                    // TODO: fix
-
                     await showDialog(
                       context: context,
                       builder: (context) {
@@ -201,104 +263,6 @@ class _IssuesWidgetState extends State<IssuesWidget> {
           },
         ),
       ],
-    );
-  }
-}
-
-class IssueDialogWidget extends StatefulWidget {
-  const IssueDialogWidget({
-    Key? key,
-    required this.issue,
-    required this.project,
-  }) : super(key: key);
-
-  final Issue issue;
-  final Project project;
-
-  @override
-  State<IssueDialogWidget> createState() => _IssueDialogWidgetState();
-}
-
-class _IssueDialogWidgetState extends State<IssueDialogWidget> {
-  final _summaryFocusNode = FocusNode();
-  final _summaryController = TextEditingController();
-
-  final _descriptionFocusNode = FocusNode();
-  final _descriptionController = TextEditingController();
-
-  @override
-  void initState() {
-    super.initState();
-
-    final issue = widget.issue;
-
-    _summaryController.text = issue.fields.summary ?? '';
-    _descriptionController.text = issue.fields.description?.compute() ?? '';
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final issue = widget.issue;
-
-    // TODO: fix, will pop scope
-    return Center(
-      child: ConstrainedBox(
-        constraints: BoxConstraints.loose(const Size.fromWidth(900)),
-        child: Dialog(
-          clipBehavior: Clip.antiAlias,
-          child: Scaffold(
-            appBar: AppBar(
-              title: Builder(
-                builder: (context) {
-                  final project = widget.project;
-
-                  return Text(
-                    '${project.key} / ${issue.key}',
-                    style: Theme.of(context).textTheme.overline,
-                  );
-                },
-              ),
-            ),
-            body: CustomScrollView(
-              slivers: [
-                SliverFillRemaining(
-                  hasScrollBody: false,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      // TODO: fix, finish the layout
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16),
-                        child: TextFormField(
-                          focusNode: _summaryFocusNode,
-                          controller: _summaryController,
-                          decoration: const InputDecoration(
-                            label: Text('Summary'),
-                            alignLabelWithHint: true,
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16),
-                        child: TextFormField(
-                          minLines: 1,
-                          maxLines: 10,
-                          focusNode: _descriptionFocusNode,
-                          controller: _descriptionController,
-                          decoration: const InputDecoration(
-                            label: Text('Description'),
-                            alignLabelWithHint: true,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
     );
   }
 }

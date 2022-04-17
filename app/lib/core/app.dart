@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sure_project_manager/modules/login_page.dart';
 import 'package:sure_project_manager/modules/main_page.dart';
+import 'package:sure_project_manager/modules/settings_page.dart';
 import 'package:sure_project_manager/modules/splash_page.dart';
 import 'package:sure_project_manager/providers/app_provider.dart';
 import 'package:provider/provider.dart';
@@ -30,6 +31,7 @@ class App extends StatelessWidget {
           SplashPage.route: (context) => const SplashPage(),
           LoginPage.route: (context) => const LoginPage(),
           MainPage.route: (context) => const MainPage(),
+          SettingsPage.route: (context) => const SettingsPage(),
         },
       ),
     );

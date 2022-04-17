@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:sure_project_manager/utils/services/networking.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:pdf/widgets.dart' as pw;
+import 'package:sure_project_manager/utils/services/networking.dart';
 
 part 'issue.g.dart';
 
@@ -104,6 +105,24 @@ class Description {
     }
 
     return const Text('');
+  }
+
+  pw.Widget computePdfWidget() {
+    if (text != null) {
+      return pw.Padding(
+        padding: const pw.EdgeInsets.only(bottom: 16),
+        child: pw.Text(text ?? ''),
+      );
+    }
+
+    if (content != null) {
+      return pw.Column(
+        crossAxisAlignment: pw.CrossAxisAlignment.stretch,
+        children: (content ?? []).map((e) => e.computePdfWidget()).toList(),
+      );
+    }
+
+    return pw.Text('');
   }
 
   String compute() {

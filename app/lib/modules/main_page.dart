@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:sure_project_manager/models/project.dart';
+import 'package:sure_project_manager/modules/settings_page.dart';
 import 'package:sure_project_manager/modules/splash_page.dart';
 import 'package:sure_project_manager/providers/app_provider.dart';
 import 'package:sure_project_manager/utils/services/shared_preferences.dart';
@@ -16,17 +17,10 @@ class MainPage extends StatefulWidget {
 }
 
 class _MainPageState extends State<MainPage> {
-  Future<void> _newIssue() async {
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(
-        behavior: SnackBarBehavior.floating,
-        content: const Text('Work in progress.'),
-        action: SnackBarAction(
-          label: 'OK',
-          onPressed: () {},
-        ),
-      ),
-    );
+  final _drawerController = ScrollController();
+
+  Future<void> _settings() async {
+    await Navigator.of(context).pushNamed(SettingsPage.route);
   }
 
   Future<void> _logout() async {
@@ -53,14 +47,19 @@ class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Sure Project Manager')),
-      floatingActionButton: FloatingActionButton.extended(
-        onPressed: _newIssue,
-        icon: const Icon(Icons.add),
-        label: const Text('NEW ISSUE'),
+      appBar: AppBar(
+        title: const Text('Sure Project Manager'),
+        actions: [
+          IconButton(
+            tooltip: 'Settings',
+            icon: const Icon(Icons.settings),
+            onPressed: _settings,
+          ),
+        ],
       ),
       drawer: Drawer(
         child: ListView(
+          controller: _drawerController,
           children: [
             Consumer<AppProvider>(
               builder: (context, value, child) {
