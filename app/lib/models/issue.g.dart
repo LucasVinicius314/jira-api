@@ -35,6 +35,9 @@ Fields _$FieldsFromJson(Map<String, dynamic> json) => Fields(
       description: json['description'] == null
           ? null
           : Description.fromJson(json['description'] as Map<String, dynamic>),
+      issuetype: json['issuetype'] == null
+          ? null
+          : IssueType.fromJson(json['issuetype'] as Map<String, dynamic>),
       status: json['status'] == null
           ? null
           : Status.fromJson(json['status'] as Map<String, dynamic>),
@@ -51,11 +54,12 @@ Map<String, dynamic> _$FieldsToJson(Fields instance) => <String, dynamic>{
       'timetracking': instance.timetracking,
       'summary': instance.summary,
       'description': instance.description?.toJson(),
+      'issuetype': instance.issuetype?.toJson(),
       'status': instance.status?.toJson(),
     };
 
 Search _$SearchFromJson(Map<String, dynamic> json) => Search(
-      expand: json['expand'] as String,
+      expand: json['expand'] as String?,
       startAt: json['startAt'] as int,
       maxResults: json['maxResults'] as int,
       total: json['total'] as int,
@@ -128,4 +132,26 @@ Map<String, dynamic> _$StatusCategoryToJson(StatusCategory instance) =>
       'key': instance.key,
       'colorName': instance.colorName,
       'name': instance.name,
+    };
+
+IssueType _$IssueTypeFromJson(Map<String, dynamic> json) => IssueType(
+      self: json['self'] as String,
+      id: json['id'] as String,
+      description: json['description'] as String,
+      iconUrl: json['iconUrl'] as String,
+      name: json['name'] as String,
+      subtask: json['subtask'] as bool,
+      avatarId: json['avatarId'] as int?,
+      hierarchyLevel: json['hierarchyLevel'] as int?,
+    );
+
+Map<String, dynamic> _$IssueTypeToJson(IssueType instance) => <String, dynamic>{
+      'self': instance.self,
+      'id': instance.id,
+      'description': instance.description,
+      'iconUrl': instance.iconUrl,
+      'name': instance.name,
+      'subtask': instance.subtask,
+      'avatarId': instance.avatarId,
+      'hierarchyLevel': instance.hierarchyLevel,
     };

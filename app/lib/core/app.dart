@@ -22,10 +22,10 @@ class App extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         theme: ThemeData(
           fontFamily: 'Poppins',
+          primarySwatch: Colors.orange,
           textButtonTheme: TextButtonThemeData(style: buttonStyle),
           elevatedButtonTheme: ElevatedButtonThemeData(style: buttonStyle),
           outlinedButtonTheme: OutlinedButtonThemeData(style: buttonStyle),
-          colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.orange),
         ),
         routes: {
           SplashPage.route: (context) => const SplashPage(),

@@ -72,7 +72,14 @@ jiraRouter.get('/getissue', async (req, res) => {
 
 jiraRouter.get('/search', async (req, res) => {
   try {
-    const data = await Jira.search(req.user)
+    const issueTypesParam = req.query['issueTypes']
+
+    const issueTypes =
+      issueTypesParam !== undefined && issueTypesParam !== ''
+        ? (issueTypesParam as string).split(',')
+        : null
+
+    const data = await Jira.search(req.user, issueTypes)
 
     res.json(data.data)
   } catch (error) {

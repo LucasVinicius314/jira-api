@@ -98,6 +98,16 @@ export namespace JiraEntities {
           }
         ]
       }
+      issuetype: {
+        self: string
+        id: string
+        description: string
+        iconUrl: string
+        name: string
+        subtask: boolean
+        avatarId: number
+        hierarchyLevel: number
+      }
       project?: Project
       comment?: [
         {

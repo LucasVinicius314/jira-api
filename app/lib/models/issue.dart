@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:sure_project_manager/utils/services/networking.dart';
+import 'package:sure_project_manager/widgets/issues_widget.dart';
 
 part 'issue.g.dart';
 
@@ -21,8 +22,10 @@ class Issue {
     required this.fields,
   });
 
-  static Future<Search> search() async {
-    return Search.fromJson(await Api.get('jira/search'));
+  static Future<Search> search({required Set<IssueTypes> issueTypes}) async {
+    return Search.fromJson(await Api.get('jira/search', {
+      'issueTypes': issueTypes.map((e) => issueTypeToString[e]).join(','),
+    }));
   }
 
   factory Issue.fromJson(Map<String, dynamic> json) => _$IssueFromJson(json);
@@ -43,6 +46,7 @@ class Fields {
   final dynamic timetracking;
   final String? summary;
   final Description? description;
+  final IssueType? issuetype;
   final Status? status;
 
   Fields({
@@ -57,6 +61,7 @@ class Fields {
     required this.timetracking,
     required this.summary,
     required this.description,
+    required this.issuetype,
     required this.status,
   });
 
@@ -67,7 +72,7 @@ class Fields {
 
 @JsonSerializable(fieldRename: FieldRename.none, explicitToJson: true)
 class Search {
-  final String expand;
+  final String? expand;
   final int startAt;
   final int maxResults;
   final int total;
@@ -191,4 +196,32 @@ class StatusCategory {
       _$StatusCategoryFromJson(json);
 
   Map<String, dynamic> toJson() => _$StatusCategoryToJson(this);
+}
+
+@JsonSerializable(fieldRename: FieldRename.none, explicitToJson: true)
+class IssueType {
+  final String self;
+  final String id;
+  final String description;
+  final String iconUrl;
+  final String name;
+  final bool subtask;
+  final int? avatarId;
+  final int? hierarchyLevel;
+
+  IssueType({
+    required this.self,
+    required this.id,
+    required this.description,
+    required this.iconUrl,
+    required this.name,
+    required this.subtask,
+    required this.avatarId,
+    required this.hierarchyLevel,
+  });
+
+  factory IssueType.fromJson(Map<String, dynamic> json) =>
+      _$IssueTypeFromJson(json);
+
+  Map<String, dynamic> toJson() => _$IssueTypeToJson(this);
 }

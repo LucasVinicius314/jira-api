@@ -169,7 +169,17 @@ export class Jira {
   /**
    * https://developer.atlassian.com/cloud/jira/platform/rest/v3/api-group-issue-search/#api-rest-api-3-search-get
    */
-  static search = async (user: CommonEntities.UserAttributes) => {
+  static search = async (
+    user: CommonEntities.UserAttributes,
+    issueTypes: string[] | null
+  ) => {
+    const projectQuery = `project = ${user.teamKey}`
+    const issueTypeQuery =
+      issueTypes === null ? null : `issuetype in (${issueTypes.join(',')})`
+
+    const issueTypeQueryAppend =
+      issueTypeQuery === null ? '' : `and ${issueTypeQuery}`
+
     return await axios.get<{
       expand: number
       startAt: number
@@ -179,8 +189,8 @@ export class Jira {
       warningMessages: string[]
     }>(await this.url('search', user), {
       params: {
-        fields: 'summary,description,status',
-        jql: `project = ${user.teamKey}`,
+        fields: 'summary,description,status,issuetype',
+        jql: `${projectQuery} ${issueTypeQueryAppend}`,
       },
       headers: await this.getHeaders(user),
     })
