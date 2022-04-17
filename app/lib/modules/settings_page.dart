@@ -134,7 +134,7 @@ class _SettingsPageState extends State<SettingsPage> {
               padding: const EdgeInsets.all(8),
               child: TextButton(
                 style: TextButton.styleFrom(primary: Colors.black),
-                child: const Text('Save'),
+                child: const Text('SAVE'),
                 onPressed: _save,
               ),
             ),
