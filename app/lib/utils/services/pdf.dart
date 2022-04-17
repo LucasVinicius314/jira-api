@@ -1,13 +1,17 @@
 import 'dart:io';
 
 import 'package:file_saver/file_saver.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:sure_project_manager/models/issue.dart';
 import 'package:sure_project_manager/utils/services/shared_preferences.dart';
 
 Future<void> exportIssues({required List<Issue> issues}) async {
-  final fontData = File('assets/fonts/Poppins-Regular.ttf').readAsBytesSync();
+  final fontData = kIsWeb
+      ? await rootBundle.load('assets/fonts/Poppins-Regular.ttf')
+      : File('assets/fonts/Poppins-Regular.ttf').readAsBytesSync();
   final ttf = pw.Font.ttf(fontData.buffer.asByteData());
 
   final document = pw.Document(theme: pw.ThemeData.withFont(base: ttf));

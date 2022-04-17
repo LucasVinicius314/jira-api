@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:sure_project_manager/models/issue.dart';
 import 'package:sure_project_manager/models/project.dart';
@@ -55,6 +56,8 @@ class _IssuesWidgetState extends State<IssuesWidget> {
           );
         },
       );
+
+      if (kDebugMode) rethrow;
     }
   }
 
