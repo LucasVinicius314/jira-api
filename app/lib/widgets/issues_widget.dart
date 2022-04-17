@@ -370,9 +370,8 @@ class _FilterModalBottomSheetState extends State<FilterModalBottomSheet> {
       children: [
         ConstrainedBox(
           constraints: BoxConstraints.loose(const Size.fromWidth(900)),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
+          child: ListView(
+            shrinkWrap: true,
             children: [
               Padding(
                 padding: const EdgeInsets.all(16),
